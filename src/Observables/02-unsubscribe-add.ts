@@ -6,7 +6,7 @@ const observer: Observer<any> = {
     complete: () => console.log('completado')
 }
 
-const interval$ = new Observable ( subs => {
+const interval$ = new Observable<number> ( subs => {
     let time = 0
     const interval = setInterval(() => {
         time = time + 1
@@ -26,14 +26,17 @@ const interval$ = new Observable ( subs => {
 })
 
 
-const subs1 = interval$.subscribe((num)=> console.log('Num', num))
-const subs2 = interval$.subscribe((num)=> console.log('Num', num))
-const subs3 = interval$.subscribe((num)=> console.log('Num', num))
+const subs1 = interval$.subscribe(observer)
+const subs2 = interval$.subscribe(observer)
+const subs3 = interval$.subscribe(observer)
+
+subs1.add(subs2)
+     //.add(subs3) //TODO: Deprecado? 
 
 setTimeout(()=> {
     subs1.unsubscribe()
-    subs2.unsubscribe()
-    subs3.unsubscribe()
+    // subs2.unsubscribe()
+    // subs3.unsubscribe()
 
     console.log('Completado timeout');
 }, 6000)
