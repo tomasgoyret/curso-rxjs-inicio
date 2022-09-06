@@ -1,6 +1,6 @@
-import { debounceTime, fromEvent, map, mergeAll, mergeMap, Observable, pluck, switchMap } from "rxjs"
+import { debounceTime, fromEvent, map, mergeAll, mergeMap, Observable, pluck } from "rxjs"
 import { ajax } from "rxjs/ajax"
-import { GitHubUser, GitHubUsers } from "./interfaces/interfaces"
+import { GitHubUser, GitHubUsers } from "../interfaces/interfaces"
 
 const body = document.querySelector('body')
 const textInput = document.createElement('input')
@@ -48,7 +48,7 @@ const url = 'https://httpbin.org/delay/1?arg='
 
 input$.pipe(
     pluck('target', 'value'),
-    switchMap( texto => ajax.getJSON( url + texto )) // no seria conveniente en este caso usar merge map por que hacen muchas peticiones 
+    mergeMap( texto => ajax.getJSON( url + texto )) // no seria conveniente en este caso usar merge map por que hacen muchas peticiones 
 ).subscribe( console.log )
 
 
